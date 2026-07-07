@@ -9,10 +9,10 @@ A digital ledger application for shopkeepers to manage credit/debit transactions
 
 ## 👥 Team & Contribution Lanes
 * **Yashwardhan Chaudhari**: Frontend & Database ().
-* **Tejas Pujari**: Backend & Database ().
 * **Kanishka Girnaar**: UI/UX & Design ().
+* **Tejas Pujari**: Backend & Database ().
 
 ## 🛠️ Tech Stack
 * **Frontend:** React, TailwindCSS
-* **Backend:** Node.js, Express
-* **Database:** PostgreSQL
+* **Backend:** Node.js, Express 
+* **Database:** PostgreSQL,Prisma
