@@ -15,4 +15,4 @@ A digital ledger application for shopkeepers to manage credit/debit transactions
 ## 🛠️ Tech Stack
 * **Frontend:** React, TailwindCSS
 * **Backend:** Node.js, Express 
-* **Database:** PostgreSQL,Prisma
+* **Database:** PostgreSQL,Prismagit pull origin main
