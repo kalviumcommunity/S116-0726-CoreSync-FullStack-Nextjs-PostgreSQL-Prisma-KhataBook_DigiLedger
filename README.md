@@ -16,3 +16,6 @@ A digital ledger application for shopkeepers to manage credit/debit transactions
 * **Frontend:** React, TailwindCSS
 * **Backend:** Node.js, Express 
 * **Database:** PostgreSQL,Prismagit pull origin main
+
+## Login Page
+![Alternative Text](DevAssets/login.jpeg)
