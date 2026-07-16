@@ -1,0 +1,83 @@
+// Khatabook Digital Ledger Backend - Prisma Schema
+// Database models for transaction management with audit trails
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - Authentication user
+model User {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email         String    @unique
+  password      String    // bcrypt hashed
+  name          String
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  shopkeepers   Shopkeeper[]
+  auditLogs     AuditLog[]
+
+  @@map("users")
+}
+
+// Shopkeeper model - Ledger owner (linked to User)
+model Shopkeeper {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String    @db.Uuid
+  name          String
+  email         String    @unique
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+
+  @@index([userId])
+  @@map("shopkeepers")
+}
+
+// Transaction model - Individual financial records
+model Transaction {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopkeeperId  String    @db.Uuid
+  amount        Decimal   @db.Decimal(19, 2)
+  type          String    // DEBIT | CREDIT
+  description   String    @db.VarChar(500)
+  version       Int       @default(1)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  shopkeeper    Shopkeeper @relation(fields: [shopkeeperId], references: [id], onDelete: Cascade)
+  auditLogs     AuditLog[]
+
+  @@index([shopkeeperId, createdAt(sort: Desc)])
+  @@index([shopkeeperId, deletedAt])
+  @@index([deletedAt])
+  @@map("transactions")
+}
+
+// AuditLog model - Complete history of transaction modifications
+model AuditLog {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transactionId  String   @db.Uuid
+  userId         String   @db.Uuid
+  changeType     String   // CREATE | UPDATE | DELETE
+  oldValues      Json?
+  newValues      Json
+  fieldsChanged  String[]
+  timestamp      DateTime @default(now())
+
+  transaction    Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId])
+  @@index([timestamp(sort: Desc)])
+  @@index([userId])
+  @@map("audit_logs")
+}
