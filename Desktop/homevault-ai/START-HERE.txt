@@ -1,0 +1,142 @@
+╔══════════════════════════════════════════════════════════════╗
+║          HomeVault AI - Quick Start Guide                   ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ EVERYTHING IS NOW RUNNING!
+
+┌──────────────────────────────────────────────────────────────┐
+│ THE REAL ISSUE WAS:                                          │
+└──────────────────────────────────────────────────────────────┘
+
+PostgreSQL and Redis were NOT running!
+npm run dev works fine - but the backend needs these services.
+
+┌──────────────────────────────────────────────────────────────┐
+│ SOLUTION: Start Database & Redis First                      │
+└──────────────────────────────────────────────────────────────┘
+
+STEP 1: Start Database & Redis (using Docker)
+   Double-click: start-services.bat
+
+STEP 2: Start Application
+   Double-click: start-all.bat
+
+OR DO BOTH AT ONCE:
+   Double-click: start-all.bat (now auto-starts services!)
+
+┌──────────────────────────────────────────────────────────────┐
+│ CURRENTLY RUNNING                                            │
+└──────────────────────────────────────────────────────────────┘
+
+✅ PostgreSQL: localhost:5432
+✅ Redis: localhost:6379
+✅ Backend API: http://localhost:5000
+✅ Frontend: http://localhost:5173
+✅ API Docs: http://localhost:5000/api-docs
+
+👉 OPEN YOUR BROWSER: http://localhost:5173
+
+┌──────────────────────────────────────────────────────────────┐
+│ MANUAL START (Step by Step)                                 │
+└──────────────────────────────────────────────────────────────┘
+
+Terminal 1: Start Database & Redis
+  cd backend
+  docker-compose -f docker-compose.dev.yml up -d
+
+Terminal 2: Start Backend
+  cd backend
+  npm run dev
+
+Terminal 3: Start Frontend
+  cd frontend
+  npm run dev
+
+┌──────────────────────────────────────────────────────────────┐
+│ DEMO ACCOUNTS                                                │
+└──────────────────────────────────────────────────────────────┘
+
+Admin Account:
+  Email: admin@homevault.ai
+  Password: Password@123
+
+Regular User:
+  Email: demo@homevault.ai
+  Password: Password@123
+
+┌──────────────────────────────────────────────────────────────┐
+│ ACCESS POINTS                                                │
+└──────────────────────────────────────────────────────────────┘
+
+🌐 Frontend (Web App): http://localhost:5173
+⚡ Backend API:         http://localhost:5000
+📚 API Documentation:   http://localhost:5000/api-docs
+
+┌──────────────────────────────────────────────────────────────┐
+│ TROUBLESHOOTING                                              │
+└──────────────────────────────────────────────────────────────┘
+
+❌ Problem: "npm run dev" fails with connection errors
+
+✅ Solution: You need to start PostgreSQL and Redis first!
+   Run: start-services.bat
+   
+   The backend needs these services to run. This is why it wasn't
+   working before!
+
+❌ Problem: Port already in use (EADDRINUSE error)
+
+✅ Solution: Kill the process using the port
+   
+   PowerShell:
+   Get-NetTCPConnection -LocalPort 5000 | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+   Get-NetTCPConnection -LocalPort 5173 | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+
+❌ Problem: Docker containers not starting
+
+✅ Solution: Make sure Docker Desktop is running
+   1. Open Docker Desktop application
+   2. Wait for it to fully start
+   3. Then run: start-services.bat
+
+❌ Problem: Database connection error
+
+✅ Solution: Check if PostgreSQL container is running
+   docker ps
+   
+   If not running:
+   cd backend
+   docker-compose -f docker-compose.dev.yml up -d
+
+┌──────────────────────────────────────────────────────────────┐
+│ ADDITIONAL FILES                                             │
+└──────────────────────────────────────────────────────────────┘
+
+📄 HOW-TO-RUN.md      - Detailed instructions with troubleshooting
+📄 README.md          - Project overview and architecture
+🔧 check-setup.bat    - Verify your setup is complete
+🚀 start-backend.bat  - Start only backend
+🚀 start-frontend.bat - Start only frontend
+🚀 start-all.ps1      - PowerShell version of start-all
+
+┌──────────────────────────────────────────────────────────────┐
+│ TECH STACK                                                   │
+└──────────────────────────────────────────────────────────────┘
+
+Backend:  Node.js, Express, TypeScript, Prisma, PostgreSQL, Redis
+Frontend: React, TypeScript, Vite, TailwindCSS, React Query
+
+┌──────────────────────────────────────────────────────────────┐
+│ NEED HELP?                                                   │
+└──────────────────────────────────────────────────────────────┘
+
+Check the terminal/command window for error messages.
+Most issues are related to:
+  • Ports already in use
+  • PostgreSQL or Redis not running
+  • Missing dependencies (run npm install)
+  • Missing .env files
+
+For detailed help, see: HOW-TO-RUN.md
+
+════════════════════════════════════════════════════════════════
